@@ -13,7 +13,7 @@ namespace WavingGrid
         public int SpringBase = 5;
         public float MaxDisplacement = 8;
 
-        private bool isInteractive = true;
+        public bool isInteractive = true;
 
         // Use this for initialization
         void Start ()
@@ -121,6 +121,7 @@ namespace WavingGrid
 
         public void DisableInteractive()
         {
+            Debug.Log("Disable interactive");
             SetInteractive(false);
         }
 

@@ -8,6 +8,8 @@ namespace WavingGrid
 
         void Update()
         {
+            if (!GridManager.isInteractive) return;
+
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
