@@ -17,6 +17,14 @@ namespace Assets.scripts
         // Use this for initialization
         void Start ()
         {
+            CreateGrid();
+
+            AddRowJoints();
+            AddColJoints();
+        }
+
+        private void CreateGrid()
+        {
             cubesGrid = new GameObject[numRows, numCols];
 
             for (int i = 0; i < numRows; i++)
@@ -24,12 +32,18 @@ namespace Assets.scripts
                 for (int j = 0; j < numCols; j++)
                 {
                     var cubePos = new Vector3(i * 1, 0, j * 1);
-                    cubesGrid[i,j] = CreateCube(cubePos);
+                    GameObject cube = CreateCube(cubePos);
+                    cubesGrid[i, j] = cube;
+
+                    //create quad collider for detecting pressure
+                    var quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
+
+                    quad.transform.position = cubePos;
+                    quad.transform.Rotate(90,0,0);
+                    quad.transform.parent = cube.transform.parent;
+                    quad.GetComponent<Renderer>().enabled = false;
                 }
             }
-
-            AddRowJoints();
-            AddColJoints();
         }
 
         private void AddRowJoints()
@@ -67,19 +81,27 @@ namespace Assets.scripts
 
             cube.GetComponent<Renderer>().material = cubeMat;
             var cubeTransform = cube.transform;
-            cubeTransform.position = position;
 
-            cubeTransform.parent = transform;
+            //move down by half cube height for scaling from one side
+            position += new Vector3(0, -0.5f, 0);
+
+            cubeTransform.position = position;
+            
+            GameObject go = new GameObject("Scaler object");
+            go.transform.parent = transform;
+            cube.transform.parent = go.transform;
+
+
             var rb = cube.AddComponent<Rigidbody>();
             rb.useGravity = false;
             rb.constraints = RigidbodyConstraints.FreezeRotation;
             var cubeController = cube.AddComponent<CubeController>();
 
             cubeController.Init();
-            cubeTransform.localScale = new Vector3(1, cubeController.maxDisplacement, 1);
+            go.transform.localScale = new Vector3(1, cubeController.maxDisplacement, 1);
+            //cubeTransform.localScale = new Vector3(1, cubeController.maxDisplacement, 1);
 
             cube.AddComponent<SpringJoint>().spring = SpringBase;
-
 
             return cube;
         }
