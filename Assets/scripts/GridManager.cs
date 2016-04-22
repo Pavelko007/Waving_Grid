@@ -121,27 +121,24 @@ namespace WavingGrid
 
         public void DisableInteractive()
         {
-            if (!isInteractive) return;
-
-            isInteractive = false;
-
-            foreach (var cube in cubesGrid)
-            {
-                cube.GetComponent<Rigidbody>().isKinematic = true;
-                cube.GetComponent<CubeMovement>().enabled = true;
-            }
+            SetInteractive(false);
         }
 
         public void EnableInteractive()
         {
-            if (isInteractive) return;
+            SetInteractive(true);
+        }
 
-            isInteractive  = true;
+        private void SetInteractive(bool enable)
+        {
+            if (isInteractive == enable) return;
+
+            isInteractive = enable;
 
             foreach (var cube in cubesGrid)
             {
-                cube.GetComponent<Rigidbody>().isKinematic = false;
-                cube.GetComponent<CubeMovement>().enabled = false;
+                cube.GetComponent<Rigidbody>().isKinematic = !enable;
+                cube.GetComponent<CubeMovement>().enabled = !enable;
             }
         }
     }
