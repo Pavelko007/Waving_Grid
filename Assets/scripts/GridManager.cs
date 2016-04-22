@@ -128,6 +128,7 @@ namespace WavingGrid
             foreach (var cube in cubesGrid)
             {
                 cube.GetComponent<Rigidbody>().isKinematic = true;
+                cube.GetComponent<CubeMovement>().enabled = true;
             }
         }
 
@@ -140,6 +141,7 @@ namespace WavingGrid
             foreach (var cube in cubesGrid)
             {
                 cube.GetComponent<Rigidbody>().isKinematic = false;
+                cube.GetComponent<CubeMovement>().enabled = false;
             }
         }
     }

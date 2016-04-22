@@ -117,7 +117,7 @@ MonoBehaviour:
   cubeMat: {fileID: 2100000, guid: 018ceed04fa466c48bc801c369513d49, type: 2}
   SpringNeighbor: 25
   SpringBase: 5
-  MaxDisplacement: 8
+  MaxDisplacement: 5
 --- !u!4 &405184546
 Transform:
   m_ObjectHideFlags: 0
@@ -375,8 +375,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1920275264}
-  m_LocalRotation: {x: -0.36481068, y: 0.041037224, z: -0.016097482, w: -0.9300377}
-  m_LocalPosition: {x: 7.52743, y: 12.035966, z: -5.11764}
+  m_LocalRotation: {x: -0.40562865, y: 0.1510635, z: -0.0681678, w: -0.89888734}
+  m_LocalPosition: {x: 11.514484, y: 10.669661, z: -5.424468}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
