@@ -40,32 +40,30 @@ namespace WavingGrid
                 {
                     const float halfCubeWidth = .5f;
 
-                    Vector3 cubePos = new Vector3(i * 1, 0, j * 1);
+                    var cubePos = new Vector3(i * 1, 0, j * 1);
+
                     cubePos += new Vector3(halfCubeWidth, 0, halfCubeWidth);
 
-                    Vector3 position = cubePos;
+                    var position = cubePos;
 
-                    GameObject cubeGO = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                    var parentTransform = new GameObject("Scaler object").transform;
+
+                    parentTransform.parent = transform;
+
+                    var cubeGO = GameObject.CreatePrimitive(PrimitiveType.Cube);
+
+                    cubeGO.transform.parent = parentTransform;
 
                     cubeGO.GetComponent<Renderer>().material = cubeMat;
-                    var cubeTransform = cubeGO.transform;
 
                     //move down by half cube height for scaling from one side
                     position += new Vector3(0, -halfCubeWidth, 0);
+                    cubeGO.transform.position = position;
 
-                    cubeTransform.position = position;
-
-                    GameObject go = new GameObject("Scaler object");
-                    go.transform.parent = transform;
-                    cubeGO.transform.parent = go.transform;
-
-
-                    var rb = cubeGO.AddComponent<Rigidbody>();
-                    rb.useGravity = false;
-                    rb.constraints = RigidbodyConstraints.FreezeRotation;
+                    AddRigidBody(cubeGO);
 
                     cubeGO.GetComponent<Collider>().enabled = false;
-                    go.transform.localScale = new Vector3(1, MaxDisplacement, 1);
+                    parentTransform.localScale = new Vector3(1, MaxDisplacement, 1);
 
                     cubeGO.AddComponent<SpringJoint>().spring = SpringBase;
 
@@ -76,7 +74,7 @@ namespace WavingGrid
                     //create quad collider for detecting pressure
                     var quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
                     
-                    PressureDetector pressureDetector = quad.AddComponent<PressureDetector>();
+                    var pressureDetector = quad.AddComponent<PressureDetector>();
                     pressureDetector.Init(cubeGO, MaxDisplacement);
                     cubeGO.GetComponent<CubeMovement>().initialY = pressureDetector.initY;
 
@@ -86,6 +84,13 @@ namespace WavingGrid
                     quad.GetComponent<Renderer>().enabled = false;
                 }
             }
+        }
+
+        private void AddRigidBody(GameObject cubeGO)
+        {
+            var rb = cubeGO.AddComponent<Rigidbody>();
+            rb.useGravity = false;
+            rb.constraints = RigidbodyConstraints.FreezeRotation;
         }
 
         private void AddRowJoints()
