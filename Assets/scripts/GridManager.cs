@@ -13,6 +13,8 @@ namespace WavingGrid
         public int SpringBase = 5;
         public float MaxDisplacement = 8;
 
+        private bool isInteractive = true;
+
         // Use this for initialization
         void Start ()
         {
@@ -20,18 +22,25 @@ namespace WavingGrid
 
             AddRowJoints();
             AddColJoints();
+
+            DisableInteractive();
         }
 
         private void CreateGrid()
         {
+            var gridPlane = GameObject.FindGameObjectWithTag("GridPlane");
+            
+            gridPlane.transform.localScale = new Vector3(numRows, 1, numCols);
+
             cubesGrid = new GameObject[numRows, numCols];
 
             for (int i = 0; i < numRows; i++)
             {
                 for (int j = 0; j < numCols; j++)
                 {
-                    var cubePos = new Vector3(i * 1, 0, j * 1);
+                    var cubePos = new Vector3(i * 1 + .5f, 0, j * 1 + 0.5f);
                     GameObject cube = CreateCube(cubePos);
+
                     cubesGrid[i, j] = cube;
 
                     //create quad collider for detecting pressure
@@ -39,6 +48,7 @@ namespace WavingGrid
 
                     PressureDetector pressureDetector = quad.AddComponent<PressureDetector>();
                     pressureDetector.Init(cube, MaxDisplacement);
+                    cube.GetComponent<CubeMovement>().initialY = pressureDetector.initY;
 
                     quad.transform.position = cubePos;
                     quad.transform.Rotate(90,0,0);
@@ -88,7 +98,7 @@ namespace WavingGrid
             position += new Vector3(0, -0.5f, 0);
 
             cubeTransform.position = position;
-            
+
             GameObject go = new GameObject("Scaler object");
             go.transform.parent = transform;
             cube.transform.parent = go.transform;
@@ -103,13 +113,34 @@ namespace WavingGrid
 
             cube.AddComponent<SpringJoint>().spring = SpringBase;
 
+            cube.AddComponent<CubeMovement>();
+
             return cube;
         }
+       
 
+        public void DisableInteractive()
+        {
+            if (!isInteractive) return;
 
-        // Update is called once per frame
-        void Update () {
-	
+            isInteractive = false;
+
+            foreach (var cube in cubesGrid)
+            {
+                cube.GetComponent<Rigidbody>().isKinematic = true;
+            }
+        }
+
+        public void EnableInteractive()
+        {
+            if (isInteractive) return;
+
+            isInteractive  = true;
+
+            foreach (var cube in cubesGrid)
+            {
+                cube.GetComponent<Rigidbody>().isKinematic = false;
+            }
         }
     }
 }

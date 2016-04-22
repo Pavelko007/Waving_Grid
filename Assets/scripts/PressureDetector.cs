@@ -13,6 +13,8 @@ namespace WavingGrid
 
         void OnMouseOver()
         {
+            GetComponentInParent<GridManager>().EnableInteractive();
+
             if (transform.position.y < initY + maxDisplacement)
             {
                 rb.velocity = force * Vector3.up;
