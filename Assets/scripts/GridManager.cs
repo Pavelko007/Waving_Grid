@@ -39,7 +39,33 @@ namespace WavingGrid
                 for (int j = 0; j < numCols; j++)
                 {
                     var cubePos = new Vector3(i * 1 + .5f, 0, j * 1 + 0.5f);
-                    GameObject cube = CreateCube(cubePos);
+                    Vector3 position = cubePos;
+                    GameObject cube1 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+
+                    cube1.GetComponent<Renderer>().material = cubeMat;
+                    var cubeTransform = cube1.transform;
+
+                    //move down by half cube height for scaling from one side
+                    position += new Vector3(0, -0.5f, 0);
+
+                    cubeTransform.position = position;
+
+                    GameObject go = new GameObject("Scaler object");
+                    go.transform.parent = transform;
+                    cube1.transform.parent = go.transform;
+
+
+                    var rb = cube1.AddComponent<Rigidbody>();
+                    rb.useGravity = false;
+                    rb.constraints = RigidbodyConstraints.FreezeRotation;
+
+                    cube1.GetComponent<Collider>().enabled = false;
+                    go.transform.localScale = new Vector3(1, MaxDisplacement, 1);
+
+                    cube1.AddComponent<SpringJoint>().spring = SpringBase;
+
+                    cube1.AddComponent<CubeMovement>();
+                    GameObject cube = cube1;
 
                     cubesGrid[i, j] = cube;
 
@@ -87,37 +113,6 @@ namespace WavingGrid
             joint.spring = SpringNeighbor;
         }
 
-        private GameObject CreateCube(Vector3 position)
-        {
-            GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-
-            cube.GetComponent<Renderer>().material = cubeMat;
-            var cubeTransform = cube.transform;
-
-            //move down by half cube height for scaling from one side
-            position += new Vector3(0, -0.5f, 0);
-
-            cubeTransform.position = position;
-
-            GameObject go = new GameObject("Scaler object");
-            go.transform.parent = transform;
-            cube.transform.parent = go.transform;
-
-
-            var rb = cube.AddComponent<Rigidbody>();
-            rb.useGravity = false;
-            rb.constraints = RigidbodyConstraints.FreezeRotation;
-
-            cube.GetComponent<Collider>().enabled = false;
-            go.transform.localScale = new Vector3(1, MaxDisplacement, 1);
-
-            cube.AddComponent<SpringJoint>().spring = SpringBase;
-
-            cube.AddComponent<CubeMovement>();
-
-            return cube;
-        }
-       
 
         public void DisableInteractive()
         {
