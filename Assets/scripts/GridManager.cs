@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Assets.scripts
+namespace WavingGrid
 {
-    //[ExecuteInEditMode]
     public class GridManager : MonoBehaviour
     {
         private GameObject[,] cubesGrid;
@@ -13,6 +11,7 @@ namespace Assets.scripts
         public Material cubeMat;
         public int SpringNeighbor = 10;
         public int SpringBase = 5;
+        public float MaxDisplacement = 8;
 
         // Use this for initialization
         void Start ()
@@ -37,6 +36,9 @@ namespace Assets.scripts
 
                     //create quad collider for detecting pressure
                     var quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
+
+                    PressureDetector pressureDetector = quad.AddComponent<PressureDetector>();
+                    pressureDetector.Init(cube, MaxDisplacement);
 
                     quad.transform.position = cubePos;
                     quad.transform.Rotate(90,0,0);
@@ -95,11 +97,9 @@ namespace Assets.scripts
             var rb = cube.AddComponent<Rigidbody>();
             rb.useGravity = false;
             rb.constraints = RigidbodyConstraints.FreezeRotation;
-            var cubeController = cube.AddComponent<CubeController>();
 
-            cubeController.Init();
-            go.transform.localScale = new Vector3(1, cubeController.maxDisplacement, 1);
-            //cubeTransform.localScale = new Vector3(1, cubeController.maxDisplacement, 1);
+            cube.GetComponent<Collider>().enabled = false;
+            go.transform.localScale = new Vector3(1, MaxDisplacement, 1);
 
             cube.AddComponent<SpringJoint>().spring = SpringBase;
 
