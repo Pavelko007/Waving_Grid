@@ -73,8 +73,11 @@ namespace WavingGrid
 
         private void AddBaseSpring(GameObject cubeGO)
         {
-            cubeGO.AddComponent<SpringJoint>()
-                .spring = SpringBase;
+            var joint = cubeGO.AddComponent<SpringJoint>();
+
+            joint.spring = SpringBase;
+
+            //joint.enablePreprocessing = false;
         }
 
         private void ChangeHeight(Transform parentTransform)
@@ -107,6 +110,9 @@ namespace WavingGrid
         private void LinkCubes(GameObject first, GameObject second)
         {
             var joint = first.AddComponent<SpringJoint>();
+
+            //joint.enablePreprocessing = false;
+
             joint.connectedBody = second.GetComponent<Rigidbody>();
             joint.spring = SpringNeighbor;
         }
