@@ -61,8 +61,7 @@ namespace WavingGrid
                     cubeGO.GetComponent<Collider>()
                         .enabled = false;
 
-                    cubeGO.AddComponent<SpringJoint>()
-                        .spring = SpringBase;
+                    AddBaseSpring(cubeGO);
 
                     cubeGO.AddComponent<CubeMovement>()
                         .Init();
@@ -73,17 +72,20 @@ namespace WavingGrid
                     var quadLocalPos = new Vector3(cubeWidth / 2f, 0, cubeWidth / 2f);
                     quad.transform.localPosition = quadLocalPos;
 
-                    var pressureDetector = quad.AddComponent<PressureDetector>();
-                    pressureDetector
-                        .Init(cubeGO, MaxDisplacement);
-
-                    pressureDetector.OnMouseOverAction = EnableInteractive;
+                    quad.AddComponent<PressureDetector>()
+                        .Init(cubeGO, MaxDisplacement, EnableInteractive);
 
                     quad.transform.Rotate(90,0,0);
                     quad.GetComponent<Renderer>()
                         .enabled = false;
                 }
             }
+        }
+
+        private void AddBaseSpring(GameObject cubeGO)
+        {
+            cubeGO.AddComponent<SpringJoint>()
+                .spring = SpringBase;
         }
 
         private void ChangeHeight(Transform parentTransform)

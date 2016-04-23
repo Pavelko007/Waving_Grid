@@ -5,7 +5,7 @@ namespace WavingGrid
 {
     public class PressureDetector : MonoBehaviour {
 
-        public float maxDisplacement = 8;
+        public float MaxDisplacement = 8;
         public float initY;
         public float force = 10;
 
@@ -16,7 +16,7 @@ namespace WavingGrid
         {
             OnMouseOverAction();
 
-            if (transform.position.y < initY + maxDisplacement)
+            if (transform.position.y < initY + MaxDisplacement)
             {
                 rb.velocity = force * Vector3.up;
             }
@@ -32,13 +32,14 @@ namespace WavingGrid
             rb.velocity = Vector3.zero;
         }
 
-        internal void Init(GameObject cube, float maxDisplacement)
+        internal void Init(GameObject cube, float maxDisplacement, Action onMouseOverAction)
         {
+            OnMouseOverAction = onMouseOverAction;
             initY = cube.GetComponent<CubeMovement>().InitialY;
 
             rb = cube.GetComponent<Rigidbody>();
 
-            this.maxDisplacement = maxDisplacement;
+            MaxDisplacement = maxDisplacement;
         }
     }
 }
