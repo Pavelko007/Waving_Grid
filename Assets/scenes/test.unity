@@ -118,7 +118,6 @@ MonoBehaviour:
   SpringBase: 5
   MaxDisplacement: 5
   isInteractive: 1
-  CubePrefab: {fileID: 123204, guid: 6319db84abaeb754ca07341fba17a8aa, type: 2}
   GridPointPrefab: {fileID: 194864, guid: d0aafd4c7f67f8843bae3ff03355209b, type: 2}
 --- !u!4 &405184546
 Transform:

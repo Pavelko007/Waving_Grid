@@ -40,11 +40,14 @@ namespace WavingGrid
                 {
                     const int cubeWidth = 1;
 
-                    var parentPos = new Vector3(i * 1, 0, j * 1);
+                    var parentPos = new Vector3(i * cubeWidth, 0, j * cubeWidth);
 
                     var parentTransform = Instantiate(GridPointPrefab).transform;
 
-                    var cubeGO = parentTransform.gameObject.GetComponentInChildren<Rigidbody>().gameObject;
+                    var cubeGO = parentTransform.gameObject
+                        .GetComponentInChildren<Rigidbody>()
+                        .gameObject;
+
                     gridPoints[i, j] = cubeGO;
 
                     parentTransform.parent = transform;
@@ -57,17 +60,13 @@ namespace WavingGrid
                         .Init();
 
                     //create quad collider for detecting pressure
-                    var quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
-                    quad.transform.parent = parentTransform;
-                    var quadLocalPos = new Vector3(cubeWidth / 2f, 0, cubeWidth / 2f);
-                    quad.transform.localPosition = quadLocalPos;
+                    var quad = parentTransform
+                        .gameObject
+                        .GetComponentInChildren<PressureDetector>()
+                        .gameObject;
 
-                    quad.AddComponent<PressureDetector>()
+                    quad.GetComponent<PressureDetector>()
                         .Init(cubeGO, MaxDisplacement, EnableInteractive);
-
-                    quad.transform.Rotate(90,0,0);
-                    quad.GetComponent<Renderer>()
-                        .enabled = false;
                 }
             }
         }
