@@ -28,7 +28,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 491632}
   m_Layer: 0
-  m_Name: GridPointParent
+  m_Name: CubeParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -210,7 +210,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxDisplacement: 8
   initY: 0
-  force: 10
+  speed: 5
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

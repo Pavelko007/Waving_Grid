@@ -7,29 +7,35 @@ namespace WavingGrid
 
         public float MaxDisplacement = 8;
         public float initY;
-        public float force = 10;
+        public float speed = 2;
 
         private Rigidbody rb;
         public Action OnMouseOverAction;
 
-        void OnMouseOver()
-        {
-            OnMouseOverAction();
+        private bool isOver = false;
 
-            if (transform.position.y < initY + MaxDisplacement)
+        void OnMouseEnter()
+        {
+            isOver = true;
+            OnMouseOverAction();
+            rb.isKinematic = true;
+        }
+
+        void FixedUpdate()
+        {
+            if (!isOver) return;
+
+            if (rb.transform.position.y < initY + MaxDisplacement)
             {
-                rb.velocity = force * Vector3.up;
+                rb.transform.Translate(Vector3.up * speed * Time.deltaTime);
             }
-            else
-            {
-                rb.isKinematic = true;
-            }
+            
         }
 
         void OnMouseExit()
         {
+            isOver = false;
             rb.isKinematic = false;
-            rb.velocity = Vector3.zero;
         }
 
         internal void Init(GameObject cube, float maxDisplacement, Action onMouseOverAction)

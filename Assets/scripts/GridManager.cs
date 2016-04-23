@@ -59,13 +59,9 @@ namespace WavingGrid
                     cubeGO.GetComponent<CubeMovement>()
                         .Init();
 
-                    //create quad collider for detecting pressure
-                    var quad = parentTransform
+                     parentTransform
                         .gameObject
                         .GetComponentInChildren<PressureDetector>()
-                        .gameObject;
-
-                    quad.GetComponent<PressureDetector>()
                         .Init(cubeGO, MaxDisplacement, EnableInteractive);
                 }
             }
