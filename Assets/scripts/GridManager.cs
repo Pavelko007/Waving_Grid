@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace WavingGrid
 {
@@ -9,12 +8,12 @@ namespace WavingGrid
 
         public int numRows = 10;
         public int numCols = 10;
-        public Material cubeMat;
         public int SpringNeighbor = 10;
         public int SpringBase = 5;
         public float MaxDisplacement = 8;
 
         public bool isInteractive = true;
+        public GameObject CubePrefab;
 
         // Use this for initialization
         void Start ()
@@ -42,17 +41,15 @@ namespace WavingGrid
                     const int cubeWidth = 1;
 
                     var parentPos = new Vector3(i * 1, 0, j * 1);
-                    var parentTransform = CreateParentObject(parentPos);
+                    var parentTransform = new GameObject("Scaler object").transform;
 
-                    var cubeGO = GameObject.CreatePrimitive(PrimitiveType.Cube);
-
+                    var cubeLocalPos = new Vector3(cubeWidth / 2f, -cubeWidth / 2f, cubeWidth / 2f);
+                    var cubeGO = Instantiate(CubePrefab, cubeLocalPos, Quaternion.identity) as GameObject;
                     gridPoints[i, j] = cubeGO;
-                    cubeGO.GetComponent<Renderer>()
-                        .material = cubeMat;
 
                     cubeGO.transform.parent = parentTransform;
-                    var cubeLocalPos = new Vector3(cubeWidth / 2f, -cubeWidth / 2f, cubeWidth / 2f);
-                    cubeGO.transform.localPosition = cubeLocalPos;
+                    parentTransform.parent = transform;
+                    parentTransform.localPosition = parentPos;
 
                     ChangeHeight(parentTransform);
 
@@ -91,15 +88,6 @@ namespace WavingGrid
         private void ChangeHeight(Transform parentTransform)
         {
             parentTransform.localScale = new Vector3(1, MaxDisplacement, 1);
-        }
-
-        private Transform CreateParentObject(Vector3 parentPos)
-        {
-            var parentTransform = new GameObject("Scaler object").transform;
-
-            parentTransform.parent = transform;
-            parentTransform.localPosition = parentPos;
-            return parentTransform;
         }
 
         private void AddRigidBody(GameObject cubeGO)

@@ -112,13 +112,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a470b8a7400fca644b1c980c1f42ea48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numRows: 15
-  numCols: 15
-  cubeMat: {fileID: 2100000, guid: 018ceed04fa466c48bc801c369513d49, type: 2}
+  numRows: 11
+  numCols: 18
   SpringNeighbor: 25
   SpringBase: 5
   MaxDisplacement: 5
   isInteractive: 1
+  CubePrefab: {fileID: 123204, guid: 6319db84abaeb754ca07341fba17a8aa, type: 2}
 --- !u!4 &405184546
 Transform:
   m_ObjectHideFlags: 0
@@ -187,8 +187,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 443169850}
-  m_LocalRotation: {x: 0.40821794, y: -0.23456973, z: 0.109381676, w: 0.87542605}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalRotation: {x: -0.3756671, y: 0.43623242, z: -0.20718269, w: -0.79098105}
+  m_LocalPosition: {x: 16.172644, y: 8.119795, z: 5.0378265}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
