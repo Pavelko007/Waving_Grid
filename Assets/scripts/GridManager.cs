@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace WavingGrid
 {
@@ -41,40 +42,46 @@ namespace WavingGrid
                     const int cubeWidth = 1;
 
                     var parentPos = new Vector3(i * 1, 0, j * 1);
-
-                    var cubeLocalPos = new Vector3(cubeWidth / 2f, -cubeWidth / 2f, cubeWidth / 2f);
-
-                    var quadLocalPos = new Vector3(cubeWidth / 2f, 0, cubeWidth / 2f);
-
                     var parentTransform = CreateParentObject(parentPos);
 
                     var cubeGO = GameObject.CreatePrimitive(PrimitiveType.Cube);
 
                     gridPoints[i, j] = cubeGO;
-                    cubeGO.GetComponent<Renderer>().material = cubeMat;
+                    cubeGO.GetComponent<Renderer>()
+                        .material = cubeMat;
+
                     cubeGO.transform.parent = parentTransform;
+                    var cubeLocalPos = new Vector3(cubeWidth / 2f, -cubeWidth / 2f, cubeWidth / 2f);
                     cubeGO.transform.localPosition = cubeLocalPos;
 
                     ChangeHeight(parentTransform);
 
                     AddRigidBody(cubeGO);
 
-                    cubeGO.GetComponent<Collider>().enabled = false;
-                    cubeGO.AddComponent<SpringJoint>().spring = SpringBase;
-                    cubeGO
-                        .AddComponent<CubeMovement>()
+                    cubeGO.GetComponent<Collider>()
+                        .enabled = false;
+
+                    cubeGO.AddComponent<SpringJoint>()
+                        .spring = SpringBase;
+
+                    cubeGO.AddComponent<CubeMovement>()
                         .Init();
 
                     //create quad collider for detecting pressure
                     var quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
+                    quad.transform.parent = parentTransform;
+                    var quadLocalPos = new Vector3(cubeWidth / 2f, 0, cubeWidth / 2f);
+                    quad.transform.localPosition = quadLocalPos;
 
                     var pressureDetector = quad.AddComponent<PressureDetector>();
-                    pressureDetector.Init(cubeGO, MaxDisplacement);
+                    pressureDetector
+                        .Init(cubeGO, MaxDisplacement);
 
-                    quad.transform.parent = parentTransform;
-                    quad.transform.localPosition = quadLocalPos;
+                    pressureDetector.OnMouseOverAction = EnableInteractive;
+
                     quad.transform.Rotate(90,0,0);
-                    quad.GetComponent<Renderer>().enabled = false;
+                    quad.GetComponent<Renderer>()
+                        .enabled = false;
                 }
             }
         }

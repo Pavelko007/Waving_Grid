@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace WavingGrid
 {
@@ -9,10 +10,11 @@ namespace WavingGrid
         public float force = 10;
 
         private Rigidbody rb;
+        public Action OnMouseOverAction;
 
         void OnMouseOver()
         {
-            GetComponentInParent<GridManager>().EnableInteractive();
+            OnMouseOverAction();
 
             if (transform.position.y < initY + maxDisplacement)
             {
