@@ -54,10 +54,6 @@ namespace WavingGrid
                     ChangeHeight(parentTransform);
 
                     AddRigidBody(cubeGO);
-
-                    cubeGO.GetComponent<Collider>()
-                        .enabled = false;
-
                     AddBaseSpring(cubeGO);
 
                     cubeGO.GetComponent<CubeMovement>()
