@@ -38,18 +38,15 @@ namespace WavingGrid
             {
                 for (int j = 0; j < numCols; j++)
                 {
-                    const float halfCubeWidth = .5f;
+                    const int cubeWidth = 1;
 
                     var parentPos = new Vector3(i * 1, 0, j * 1);
 
-                    var cubeLocalPos = new Vector3(halfCubeWidth, -halfCubeWidth, halfCubeWidth);
+                    var cubeLocalPos = new Vector3(cubeWidth / 2f, -cubeWidth / 2f, cubeWidth / 2f);
 
-                    var quadLocalPos = new Vector3(halfCubeWidth, 0, halfCubeWidth);
+                    var quadLocalPos = new Vector3(cubeWidth / 2f, 0, cubeWidth / 2f);
 
-                    var parentTransform = new GameObject("Scaler object").transform;
-
-                    parentTransform.parent = transform;
-                    parentTransform.localPosition = parentPos;
+                    var parentTransform = CreateParentObject(parentPos);
 
                     var cubeGO = GameObject.CreatePrimitive(PrimitiveType.Cube);
 
@@ -58,10 +55,11 @@ namespace WavingGrid
                     cubeGO.transform.parent = parentTransform;
                     cubeGO.transform.localPosition = cubeLocalPos;
 
+                    ChangeCubeLength(parentTransform);
+
                     AddRigidBody(cubeGO);
 
                     cubeGO.GetComponent<Collider>().enabled = false;
-                    parentTransform.localScale = new Vector3(1, MaxDisplacement, 1);
 
                     cubeGO.AddComponent<SpringJoint>().spring = SpringBase;
                     cubeGO.AddComponent<CubeMovement>();
@@ -73,12 +71,26 @@ namespace WavingGrid
 
                     pressureDetector.Init(cubeGO, MaxDisplacement);
                     cubeGO.GetComponent<CubeMovement>().initialY = pressureDetector.initY;
-                    quad.transform.parent = cubeGO.transform.parent;
+                    quad.transform.parent = parentTransform;
                     quad.transform.localPosition = quadLocalPos;
                     quad.transform.Rotate(90,0,0);
                     quad.GetComponent<Renderer>().enabled = false;
                 }
             }
+        }
+
+        private void ChangeCubeLength(Transform parentTransform)
+        {
+            parentTransform.localScale = new Vector3(1, MaxDisplacement, 1);
+        }
+
+        private Transform CreateParentObject(Vector3 parentPos)
+        {
+            var parentTransform = new GameObject("Scaler object").transform;
+
+            parentTransform.parent = transform;
+            parentTransform.localPosition = parentPos;
+            return parentTransform;
         }
 
         private void AddRigidBody(GameObject cubeGO)
