@@ -4,7 +4,7 @@ namespace WavingGrid
 {
     public class GridManager : MonoBehaviour
     {
-        private GameObject[,] cubesGrid;
+        private GameObject[,] gridPoints;
 
         public int numRows = 10;
         public int numCols = 10;
@@ -32,7 +32,7 @@ namespace WavingGrid
             
             gridPlane.transform.localScale = new Vector3(numRows, 1, numCols);
 
-            cubesGrid = new GameObject[numRows, numCols];
+            gridPoints = new GameObject[numRows, numCols];
 
             for (int i = 0; i < numRows; i++)
             {
@@ -50,27 +50,27 @@ namespace WavingGrid
 
                     var cubeGO = GameObject.CreatePrimitive(PrimitiveType.Cube);
 
-                    cubesGrid[i, j] = cubeGO;
+                    gridPoints[i, j] = cubeGO;
                     cubeGO.GetComponent<Renderer>().material = cubeMat;
                     cubeGO.transform.parent = parentTransform;
                     cubeGO.transform.localPosition = cubeLocalPos;
 
-                    ChangeCubeLength(parentTransform);
+                    ChangeHeight(parentTransform);
 
                     AddRigidBody(cubeGO);
 
                     cubeGO.GetComponent<Collider>().enabled = false;
-
                     cubeGO.AddComponent<SpringJoint>().spring = SpringBase;
-                    cubeGO.AddComponent<CubeMovement>();
+                    cubeGO
+                        .AddComponent<CubeMovement>()
+                        .Init();
 
                     //create quad collider for detecting pressure
                     var quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
-                    
-                    var pressureDetector = quad.AddComponent<PressureDetector>();
 
+                    var pressureDetector = quad.AddComponent<PressureDetector>();
                     pressureDetector.Init(cubeGO, MaxDisplacement);
-                    cubeGO.GetComponent<CubeMovement>().initialY = pressureDetector.initY;
+
                     quad.transform.parent = parentTransform;
                     quad.transform.localPosition = quadLocalPos;
                     quad.transform.Rotate(90,0,0);
@@ -79,7 +79,7 @@ namespace WavingGrid
             }
         }
 
-        private void ChangeCubeLength(Transform parentTransform)
+        private void ChangeHeight(Transform parentTransform)
         {
             parentTransform.localScale = new Vector3(1, MaxDisplacement, 1);
         }
@@ -106,7 +106,7 @@ namespace WavingGrid
             {
                 for (int j = 0; j < numCols - 1; j++)
                 {
-                    LinkCubes(cubesGrid[i, j], cubesGrid[i, j + 1]);
+                    LinkCubes(gridPoints[i, j], gridPoints[i, j + 1]);
                 }
             }
         }
@@ -117,7 +117,7 @@ namespace WavingGrid
             {
                 for (int i = 0; i < numRows - 1; i++)
                 {
-                    LinkCubes(cubesGrid[i, j], cubesGrid[i + 1, j]);
+                    LinkCubes(gridPoints[i, j], gridPoints[i + 1, j]);
                 }
             }
         }
@@ -147,7 +147,7 @@ namespace WavingGrid
 
             isInteractive = enable;
 
-            foreach (var cube in cubesGrid)
+            foreach (var cube in gridPoints)
             {
                 cube.GetComponent<Rigidbody>().isKinematic = !enable;
                 cube.GetComponent<CubeMovement>().enabled = !enable;

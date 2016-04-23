@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace WavingGrid
 {
@@ -33,9 +32,9 @@ namespace WavingGrid
 
         internal void Init(GameObject cube, float maxDisplacement)
         {
-            initY = cube.transform.position.y;
+            initY = cube.GetComponent<CubeMovement>().InitialY;
+
             rb = cube.GetComponent<Rigidbody>();
-            cube.GetComponent<Collider>().isTrigger = true;
 
             this.maxDisplacement = maxDisplacement;
         }

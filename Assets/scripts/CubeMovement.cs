@@ -4,7 +4,7 @@ namespace WavingGrid
 {
     public class CubeMovement : MonoBehaviour
     {
-        public float initialY ;
+        public float InitialY { get; private set; }
         public float amlitude = 2;
         public float speed = 1;
         private bool isMovingUp;
@@ -13,10 +13,16 @@ namespace WavingGrid
 
         void OnEnable()
         {
-            Init();
+            ChangeSpeedAndDirection();
         }
 
-        private void Init()
+        public void Init()
+        {
+            InitialY = gameObject.transform.position.y;
+            ChangeSpeedAndDirection();
+        }
+
+        private void ChangeSpeedAndDirection()
         {
             isMovingUp = Random.Range(0, 1.0f) < 0.5;
 
@@ -29,12 +35,12 @@ namespace WavingGrid
             if (isMovingUp)
             {
                 transform.position += Vector3.up * speed * Time.deltaTime;
-                if (transform.position.y > initialY + amlitude) isMovingUp = false;
+                if (transform.position.y > InitialY + amlitude) isMovingUp = false;
             }
             else
             {
                 transform.position += Vector3.down * speed * Time.deltaTime;
-                if (transform.position.y < initialY - amlitude) isMovingUp = true;
+                if (transform.position.y < InitialY - amlitude) isMovingUp = true;
             }
         }
     }
