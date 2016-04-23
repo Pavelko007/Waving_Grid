@@ -52,8 +52,6 @@ namespace WavingGrid
                     parentTransform.localPosition = parentPos;
 
                     ChangeHeight(parentTransform);
-
-                    AddRigidBody(cubeGO);
                     AddBaseSpring(cubeGO);
 
                     cubeGO.GetComponent<CubeMovement>()
@@ -84,13 +82,6 @@ namespace WavingGrid
         private void ChangeHeight(Transform parentTransform)
         {
             parentTransform.localScale = new Vector3(1, MaxDisplacement, 1);
-        }
-
-        private void AddRigidBody(GameObject cubeGO)
-        {
-            var rb = cubeGO.AddComponent<Rigidbody>();
-            rb.useGravity = false;
-            rb.constraints = RigidbodyConstraints.FreezeRotation;
         }
 
         private void AddRowJoints()
