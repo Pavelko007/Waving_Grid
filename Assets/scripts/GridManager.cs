@@ -60,7 +60,7 @@ namespace WavingGrid
 
                     AddBaseSpring(cubeGO);
 
-                    cubeGO.AddComponent<CubeMovement>()
+                    cubeGO.GetComponent<CubeMovement>()
                         .Init();
 
                     //create quad collider for detecting pressure
