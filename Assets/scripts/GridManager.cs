@@ -13,7 +13,7 @@ namespace WavingGrid
         public float MaxDisplacement = 8;
 
         public bool isInteractive = true;
-        public GameObject CubePrefab;
+        public GameObject GridPointPrefab;
 
         // Use this for initialization
         void Start ()
@@ -41,13 +41,12 @@ namespace WavingGrid
                     const int cubeWidth = 1;
 
                     var parentPos = new Vector3(i * 1, 0, j * 1);
-                    var parentTransform = new GameObject("Scaler object").transform;
 
-                    var cubeLocalPos = new Vector3(cubeWidth / 2f, -cubeWidth / 2f, cubeWidth / 2f);
-                    var cubeGO = Instantiate(CubePrefab, cubeLocalPos, Quaternion.identity) as GameObject;
+                    var parentTransform = Instantiate(GridPointPrefab).transform;
+
+                    var cubeGO = parentTransform.gameObject.GetComponentInChildren<Rigidbody>().gameObject;
                     gridPoints[i, j] = cubeGO;
 
-                    cubeGO.transform.parent = parentTransform;
                     parentTransform.parent = transform;
                     parentTransform.localPosition = parentPos;
 
