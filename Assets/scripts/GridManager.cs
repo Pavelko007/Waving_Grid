@@ -1,9 +1,19 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using WavingGrid.Movement;
 
 namespace WavingGrid
 {
+    public enum NonInteractiveMode
+    {
+        RandomMovement,
+        CircleWaves
+    }
+
     public class GridManager : MonoBehaviour
     {
+        public NonInteractiveMode NonInteractiveMode = NonInteractiveMode.RandomMovement;
+
         private GameObject[,] gridPoints;
 
         public int numRows = 10;
@@ -14,11 +24,25 @@ namespace WavingGrid
 
         public bool isInteractive = true;
         public GameObject GridPointPrefab;
+        private GameObject wavingPoint;
+        public float baseDamper = 0.2f;
 
         // Use this for initialization
         void Start ()
         {
             CreateGrid();
+
+            switch (NonInteractiveMode)
+            {
+                case NonInteractiveMode.RandomMovement:
+                    break;
+                case NonInteractiveMode.CircleWaves:
+                    wavingPoint = gridPoints[numRows / 2, numCols / 2];
+                    wavingPoint.AddComponent<TubeMovement>();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
 
             AddRowJoints();
             AddColJoints();
@@ -29,7 +53,7 @@ namespace WavingGrid
         private void CreateGrid()
         {
             var gridPlane = GameObject.FindGameObjectWithTag("GridPlane");
-            
+
             gridPlane.transform.localScale = new Vector3(numRows, 1, numCols);
 
             gridPoints = new GameObject[numRows, numCols];
@@ -44,9 +68,7 @@ namespace WavingGrid
 
                     var parentTransform = Instantiate(GridPointPrefab).transform;
 
-                    var cubeGO = parentTransform.gameObject
-                        .GetComponentInChildren<Rigidbody>()
-                        .gameObject;
+                    var cubeGO = parentTransform.gameObject.GetComponentInChildren<Rigidbody>().gameObject;
 
                     gridPoints[i, j] = cubeGO;
 
@@ -56,11 +78,18 @@ namespace WavingGrid
                     ChangeHeight(parentTransform);
                     AddBaseSpring(cubeGO);
 
-                    cubeGO.GetComponent<CubeMovement>()
-                        .Init();
+                    switch (NonInteractiveMode)
+                    {
+                        case NonInteractiveMode.RandomMovement:
+                            cubeGO.GetComponent<CubeMovement>().Init();
+                            break;
+                        case NonInteractiveMode.CircleWaves:
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
 
-                     parentTransform
-                        .gameObject
+                    parentTransform.gameObject
                         .GetComponentInChildren<PressureDetector>()
                         .Init(cubeGO, MaxDisplacement, EnableInteractive);
                 }
@@ -72,6 +101,7 @@ namespace WavingGrid
             var joint = cubeGO.AddComponent<SpringJoint>();
 
             joint.spring = SpringBase;
+            joint.damper = baseDamper;
 
             //joint.enablePreprocessing = false;
         }
@@ -131,10 +161,21 @@ namespace WavingGrid
 
             isInteractive = enable;
 
-            foreach (var cube in gridPoints)
+            switch (NonInteractiveMode)
             {
-                cube.GetComponent<Rigidbody>().isKinematic = !enable;
-                cube.GetComponent<CubeMovement>().enabled = !enable;
+                case NonInteractiveMode.RandomMovement:
+                    foreach (var cube in gridPoints)
+                    {
+                        cube.GetComponent<Rigidbody>().isKinematic = !enable;
+                        cube.GetComponent<CubeMovement>().enabled = !enable;
+                    }
+                    break;
+                case NonInteractiveMode.CircleWaves:
+                    wavingPoint.GetComponent<Rigidbody>().isKinematic = !enable;
+                    wavingPoint.GetComponent<TubeMovement>().enabled = !enable;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
     }

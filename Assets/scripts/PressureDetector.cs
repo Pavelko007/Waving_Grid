@@ -10,14 +10,14 @@ namespace WavingGrid
         public float speed = 2;
 
         private Rigidbody rb;
-        public Action OnMouseOverAction;
+        public Action OnMouseEnterAction;
 
         private bool isOver = false;
 
         void OnMouseEnter()
         {
             isOver = true;
-            OnMouseOverAction();
+            OnMouseEnterAction();
             rb.isKinematic = true;
         }
 
@@ -29,7 +29,6 @@ namespace WavingGrid
             {
                 rb.transform.Translate(Vector3.up * speed * Time.deltaTime);
             }
-            
         }
 
         void OnMouseExit()
@@ -38,12 +37,12 @@ namespace WavingGrid
             rb.isKinematic = false;
         }
 
-        internal void Init(GameObject cube, float maxDisplacement, Action onMouseOverAction)
+        internal void Init(GameObject gridPoint, float maxDisplacement, Action onMouseEnterAction)
         {
-            OnMouseOverAction = onMouseOverAction;
-            initY = cube.GetComponent<CubeMovement>().InitialY;
+            OnMouseEnterAction = onMouseEnterAction;
+            initY = gridPoint.transform.position.y;
 
-            rb = cube.GetComponent<Rigidbody>();
+            rb = gridPoint.GetComponent<Rigidbody>();
 
             MaxDisplacement = maxDisplacement;
         }

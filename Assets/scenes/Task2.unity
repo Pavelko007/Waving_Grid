@@ -112,13 +112,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a470b8a7400fca644b1c980c1f42ea48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  NonInteractiveMode: 1
   numRows: 25
   numCols: 32
-  SpringNeighbor: 25
+  SpringNeighbor: 21
   SpringBase: 5
-  MaxDisplacement: 5
+  MaxDisplacement: 4
   isInteractive: 1
   GridPointPrefab: {fileID: 194864, guid: 9864426a365c85c4b96f113cfbff7248, type: 2}
+  baseDamper: 0.2
 --- !u!4 &405184546
 Transform:
   m_ObjectHideFlags: 0
@@ -376,8 +378,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1920275264}
-  m_LocalRotation: {x: -0.40562865, y: 0.1510635, z: -0.0681678, w: -0.89888734}
-  m_LocalPosition: {x: 11.514484, y: 10.669661, z: -5.424468}
+  m_LocalRotation: {x: -0.35251582, y: 0.36511755, z: -0.15174912, w: -0.848171}
+  m_LocalPosition: {x: 29.58916, y: 17.098736, z: -1.3064861}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

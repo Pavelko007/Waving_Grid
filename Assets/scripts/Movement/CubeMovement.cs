@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
 
-namespace WavingGrid
+namespace WavingGrid.Movement
 {
-    public class CubeMovement : MonoBehaviour
+    public class CubeMovement : MovementBase
     {
-        public float InitialY { get; private set; }
         public float amlitude = 2;
         public float speed = 1;
         private bool isMovingUp;
