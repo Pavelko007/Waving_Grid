@@ -114,8 +114,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NonInteractiveMode: 0
-  numRows: 25
-  numCols: 32
+  numRows: 20
+  numCols: 10
   SpringNeighbor: 25
   SpringBase: 5
   MaxDisplacement: 5
@@ -393,8 +393,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1920275264}
-  m_LocalRotation: {x: -0.40562865, y: 0.1510635, z: -0.0681678, w: -0.89888734}
-  m_LocalPosition: {x: 11.514484, y: 10.669661, z: -5.424468}
+  m_LocalRotation: {x: -0.5922801, y: -0.004834112, z: 0.0035536774, w: -0.8057099}
+  m_LocalPosition: {x: 9.858066, y: 14.710907, z: -0.17740488}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
