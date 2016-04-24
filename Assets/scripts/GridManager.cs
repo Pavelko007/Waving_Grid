@@ -21,6 +21,7 @@ namespace WavingGrid
         public GameObject GridPointPrefab;
         private GameObject wavingPoint;
         public float baseDamper = 0.2f;
+        private RotateTexture rotateTexture;
 
         // Use this for initialization
         void Start ()
@@ -29,6 +30,10 @@ namespace WavingGrid
 
             switch (NonInteractiveMode)
             {
+                case NonInteractiveMode.RandomMovementRotation:
+                    rotateTexture = GetComponent<RotateTexture>();
+                    rotateTexture.enabled = false;
+                    break;
                 case NonInteractiveMode.RandomMovement:
                     break;
                 case NonInteractiveMode.CircleWaves:
@@ -79,6 +84,8 @@ namespace WavingGrid
                             cubeGO.GetComponent<CubeMovement>().Init();
                             break;
                         case NonInteractiveMode.CircleWaves:
+                            break;
+                        case NonInteractiveMode.RandomMovementRotation:
                             break;
                         default:
                             throw new ArgumentOutOfRangeException();
@@ -158,6 +165,13 @@ namespace WavingGrid
 
             switch (NonInteractiveMode)
             {
+                case NonInteractiveMode.RandomMovementRotation:
+                    rotateTexture.enabled = !enable;
+                    foreach (var cube in gridPoints)
+                    {
+                        SetGridPointInteractivity(cube, enable);
+                    }
+                    break;
                 case NonInteractiveMode.RandomMovement:
                     foreach (var cube in gridPoints)
                     {
