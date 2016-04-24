@@ -1,15 +1,10 @@
 ﻿using System;
+using System.Linq;
 using UnityEngine;
 using WavingGrid.Movement;
 
 namespace WavingGrid
 {
-    public enum NonInteractiveMode
-    {
-        RandomMovement,
-        CircleWaves
-    }
-
     public class GridManager : MonoBehaviour
     {
         public NonInteractiveMode NonInteractiveMode = NonInteractiveMode.RandomMovement;
@@ -166,17 +161,29 @@ namespace WavingGrid
                 case NonInteractiveMode.RandomMovement:
                     foreach (var cube in gridPoints)
                     {
-                        cube.GetComponent<Rigidbody>().isKinematic = !enable;
-                        cube.GetComponent<CubeMovement>().enabled = !enable;
+                        SetGridPointInteractivity(cube, enable);
                     }
                     break;
                 case NonInteractiveMode.CircleWaves:
-                    wavingPoint.GetComponent<Rigidbody>().isKinematic = !enable;
-                    wavingPoint.GetComponent<TubeMovement>().enabled = !enable;
+                    SetGridPointInteractivity(wavingPoint, enable);
+                    foreach (var gridPoint in gridPoints)
+                    {
+                        var baseSpringJoint = gridPoint
+                            .GetComponents<SpringJoint>()
+                            .First(x => x.connectedBody == null);
+
+                        baseSpringJoint.spring = enable ? SpringBase : 0;
+                    }
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+
+        private void SetGridPointInteractivity(GameObject cube, bool enable)
+        {
+            cube.GetComponent<Rigidbody>().isKinematic = !enable;
+            cube.GetComponent<MovementBase>().enabled = !enable;
         }
     }
 }
