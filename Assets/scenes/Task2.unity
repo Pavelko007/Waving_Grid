@@ -112,7 +112,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a470b8a7400fca644b1c980c1f42ea48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NonInteractiveMode: 1
+  NonInteractiveMode: 2
   numRows: 25
   numCols: 32
   SpringNeighbor: 21

@@ -7,7 +7,7 @@ namespace WavingGrid
 {
     public class GridManager : MonoBehaviour
     {
-        public NonInteractiveMode NonInteractiveMode = NonInteractiveMode.RandomMovement;
+        public NonInteractiveMode NonInteractiveMode;
 
         private GameObject[,] gridPoints;
 
