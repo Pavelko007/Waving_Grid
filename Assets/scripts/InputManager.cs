@@ -8,19 +8,34 @@ namespace WavingGrid
 
         void Update()
         {
-            if (!GridManager.isInteractive) return;
-
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-
-            if (Physics.Raycast(ray, out hit, 100))
+            if (Input.touchSupported)
             {
-                Debug.DrawLine(ray.origin, hit.point);
+                if (Input.touchCount > 0)
+                {
+                    Touch touch = Input.GetTouch(0);
+                    if (touch.phase == TouchPhase.Ended)
+                    {
+                        GridManager.DisableInteractive();
+                    }
+                }
             }
             else
             {
-                GridManager.DisableInteractive();
+                if (!GridManager.isInteractive) return;
+
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
+
+                if (Physics.Raycast(ray, out hit, 100))
+                {
+                    Debug.DrawLine(ray.origin, hit.point);
+                }
+                else
+                {
+                    GridManager.DisableInteractive();
+                }
             }
+            
         }
     }
 }
