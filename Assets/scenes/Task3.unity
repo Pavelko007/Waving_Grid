@@ -251,11 +251,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22465500, guid: 97e60fac45a6d0b4d8ce41227e99340c, type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: -56
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 22465500, guid: 97e60fac45a6d0b4d8ce41227e99340c, type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -196
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 22465500, guid: 97e60fac45a6d0b4d8ce41227e99340c, type: 2}
       propertyPath: m_SizeDelta.x
@@ -267,7 +267,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22465500, guid: 97e60fac45a6d0b4d8ce41227e99340c, type: 2}
       propertyPath: m_AnchorMin.x
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 22465500, guid: 97e60fac45a6d0b4d8ce41227e99340c, type: 2}
       propertyPath: m_AnchorMin.y
@@ -275,7 +275,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22465500, guid: 97e60fac45a6d0b4d8ce41227e99340c, type: 2}
       propertyPath: m_AnchorMax.x
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 22465500, guid: 97e60fac45a6d0b4d8ce41227e99340c, type: 2}
       propertyPath: m_AnchorMax.y
@@ -283,15 +283,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22465500, guid: 97e60fac45a6d0b4d8ce41227e99340c, type: 2}
       propertyPath: m_Pivot.x
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 22465500, guid: 97e60fac45a6d0b4d8ce41227e99340c, type: 2}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 11457888, guid: 97e60fac45a6d0b4d8ce41227e99340c, type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: Task1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 97e60fac45a6d0b4d8ce41227e99340c, type: 2}
