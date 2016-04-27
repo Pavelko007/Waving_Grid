@@ -1,68 +1,48 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace WavingGrid
 {
     public class InputManager : MonoBehaviour
     {
         public GridManager GridManager;
-        private Dictionary<int, PressureDetector> activeDetectors = new Dictionary<int, PressureDetector>();
-         
+
         void Update()
         {
             if (Input.touchSupported)
             {
+                bool wasHitAny = false;
+
                 foreach (var touch in Input.touches)
                 {
-                    PressureDetector detector;
-                    switch (touch.phase)
-                    {
-                        case TouchPhase.Ended:
-                            detector = activeDetectors[touch.fingerId];
-                            detector.SendMessage("OnMouseExit");
-                            activeDetectors.Remove(touch.fingerId);
-                            break;
-                        case TouchPhase.Began:
-                            var ray = Camera.main.ScreenPointToRay(touch.position);
+                    Debug.Log(Input.touchCount);
 
-                            RaycastHit hit;
-                            if (Physics.Raycast(ray, out hit, 100))
-                            {
-                                detector = hit.collider.GetComponent<PressureDetector>();
-
-                                hit.collider.SendMessage("OnMouseEnter");
-                                activeDetectors.Add(touch.fingerId, detector);
-                            }
-                            break;
-                    }
-                    
+                    if (TryHitDetector(touch.position)) wasHitAny = true;
                 }
 
-                if (activeDetectors.Count == 0)
-                {
-                    if(GridManager.isInteractive) GridManager.DisableInteractive();
-                }
-
-
-                //GridManager.DisableInteractive();
+                if(!wasHitAny) GridManager.DisableInteractive();
             }
             else
             {
-                if (!GridManager.isInteractive) return;
+                var wasHit = TryHitDetector(Input.mousePosition);
 
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                RaycastHit hit;
-
-                if (Physics.Raycast(ray, out hit, 100))
-                {
-                    Debug.DrawLine(ray.origin, hit.point);
-                }
-                else
-                {
-                    GridManager.DisableInteractive();
-                }
+                if (!wasHit) GridManager.DisableInteractive();
             }
-            
+        }
+
+        private bool TryHitDetector(Vector3 screenPos)
+        {
+            Ray ray = Camera.main.ScreenPointToRay(screenPos);
+            RaycastHit hit;
+
+            bool wasHit = Physics.Raycast(ray, out hit, 100);
+
+            if (wasHit)
+            {
+                Debug.DrawLine(ray.origin, hit.point);
+
+                hit.collider.GetComponent<PressureDetector>().isHovering = true;
+            }
+            return wasHit;
         }
     }
 }

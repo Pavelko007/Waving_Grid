@@ -12,28 +12,45 @@ namespace WavingGrid
         private Rigidbody rb;
         public Action OnMouseEnterAction;
 
-        private bool isOver = false;
+        public bool isHovering = false;
+        private bool wasHoveringLastFrame = false;
 
-        void OnMouseEnter()
+        private void BeginPress()
         {
-            isOver = true;
-            OnMouseEnterAction();
             rb.isKinematic = true;
         }
 
-        void FixedUpdate()
+        void Update()
         {
-            if (!isOver) return;
+            if (isHovering)
+            {
+                if (!wasHoveringLastFrame)
+                {
+                    OnMouseEnterAction();
+                    BeginPress();
+                }
 
+                Press();
+
+                wasHoveringLastFrame = isHovering;
+            }
+            else if (wasHoveringLastFrame) EndPress();
+
+            wasHoveringLastFrame = isHovering;
+            isHovering = false;
+        }
+
+
+        private void Press()
+        {
             if (rb.transform.position.y < initY + MaxDisplacement)
             {
                 rb.transform.Translate(Vector3.up * speed * Time.deltaTime);
             }
         }
 
-        void OnMouseExit()
+        private void EndPress()
         {
-            isOver = false;
             rb.isKinematic = false;
         }
 
